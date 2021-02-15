@@ -59,5 +59,3 @@ curl --location --request GET 'http://localhost:8081/memes'
 
 
 # If you have swagger enabled, make sure it is exposed at localhost:8080
-
-curl --location --request GET 'http://localhost:8080/swagger-ui/'
