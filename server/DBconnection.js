@@ -4,7 +4,7 @@ const DBconnection = async () => {
   try {
   
     if (process.env.NODE_ENV !== "production") {
-      process.env.MONGO_URL =  process.env.MONGO_URL;
+      process.env.NODE_ENV =  process.env.MONGO_URL;
       
     }
     
