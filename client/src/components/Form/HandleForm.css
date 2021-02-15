@@ -1,0 +1,29 @@
+.NameInput{
+    margin-left: 18px;
+    width: 40vw;
+    height: 3vw;
+    
+}
+.CaptionInput{
+    margin-left: 6px;
+    width: 40vw;
+    height: 8vw;
+    margin-top: 10px;
+}
+.urlInput{
+    margin-left: 32px;
+    width: 40vw;
+    height: 3vw;
+    margin-top: 10px;
+    
+}
+.submit {
+    margin-top: 20px;
+    height: 30px;
+    width:80px;
+    background-color:blue ;
+    border: 1px solid #7c8dff ;
+    border-radius: 10% ;
+    min-width: max-content;
+    margin-left: 35%;
+  }

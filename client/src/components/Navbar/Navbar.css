@@ -1,0 +1,17 @@
+#nav {
+    margin-bottom: 4vh;
+    background-color:blueviolet !important;
+  
+    font-weight: bold;
+    font-size: 3rem;
+  }
+  
+  #brand {
+    display: flex;
+    color:black !important;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    
+  }
+  

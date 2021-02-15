@@ -1,0 +1,15 @@
+.heading {
+    width: 70vw;
+    margin: 5vh auto 2vh auto;
+  }
+  
+  .form {
+    width: 70vw;
+    margin: 0 auto;
+  }
+  
+ 
+  
+  .memeUrl{
+    display: flex;
+  }
