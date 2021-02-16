@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./Memes.css";
 import Modal from "../Model";
-import { Dropdown } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 import { toast } from "react-toastify";
 
-const Memes = ({ memes: m }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [id, setId] = useState();
-  const [caption, setCaption] = useState();
-  const [url, setUrl] = useState();
+const Memes = ({ memes: meme }) => {
   const [name, setName] = useState();
+  const [caption, setCaption] = useState();
+  const [id, setId] = useState();
+  const [url, setUrl] = useState();
   const [memes, setMemes] = useState();
-
-  // will set fetched memes and will make scroller to top in case list got added with new meme
-  useEffect(() => {
+  const [isOpen, setIsOpen] = useState(false);
+ 
+ useEffect(() => {
     window.scrollTo(0, 0);
-    setMemes(m);
-  }, [m]);
+    setMemes(meme);
+  }, [meme]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -24,30 +23,14 @@ const Memes = ({ memes: m }) => {
   }, [memes]);
 
   // fetch memes
-  function fetchMemes() {
+  function getMemes() {
     fetch("/memes")
-      .then((res) => res.json())
-      .then((res) => {
-        setMemes(res.memes);
+      .then((response) => response.json())
+      .then((response) => {
+        setMemes(response.memes);
       });
   }
 
-  // just to see id of card when clicked
-  const getIdFromMeme = (id) => {
-    console.log(id);
-  };
-
-  // for fields of form when we wish to edit
-  const handleEdit = (id, caption, url, name) => {
-    setIsOpen(true);
-
-    setId(id);
-    setCaption(caption);
-    setUrl(url);
-    setName(name);
-  };
-
-  // delete meme
   const deleteMeme = (id) => {
     fetch(`/memes/${id}`, {
       method: "delete",
@@ -59,39 +42,38 @@ const Memes = ({ memes: m }) => {
       .then((data) => {
         if (data.error) {
           toast.error(data.error);
-          // alert("yes");
+          
         } else {
-          fetchMemes();
+         
           toast.success(data.message);
 
-          //
+          
         }
       });
   };
+ 
+  const Edit = (id, caption, url, name) => {
+    setIsOpen(true);
+
+    setId(id);
+    setCaption(caption);
+    setUrl(url);
+    setName(name);
+  };
 
   return (
-    <div className="meme">
-      {!memes && <p>Loading</p>}
+    <div className="entireMeme">
+      {!memes && <p>Memes Loading....</p>}
       {memes && memes.length > 0 ? (
         memes.map((meme) => (
           <div
-            className="card"
-            key={meme._id}
-            onClick={() => getIdFromMeme(meme._id)}
+            className="meme"
+            key={meme._id}     
           >
-            <div className="info">
+            <div className="memeInfo">
               <div className="data">
-                <h5>{meme.name}</h5>
-                {
-                  <span className="time">
-                    {new Date(meme.createdAt).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                }
+                <h4>{meme.name}</h4>
               </div>
-
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic">
                   <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -100,35 +82,36 @@ const Memes = ({ memes: m }) => {
                 <Dropdown.Menu>
                   <Dropdown.Item
                     onClick={() =>
-                      handleEdit(meme._id, meme.caption, meme.url, meme.name)
+                      Edit(meme._id, meme.caption, meme.url, meme.name)
                     }
                   >
                     Edit
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={() => deleteMeme(meme._id)}>
-                    Delete
-                  </Dropdown.Item>
+                  
                 </Dropdown.Menu>
               </Dropdown>
             </div>
             <p className="caption">{meme.caption}</p>
-            <img
+            <img height = "175px" width = "200px"  className ="memeImage"
               src={meme.url}
-              onError={(e) => {
-                // change image url if given url is a broken image
-                e.target.src =
+              onError={(event) => {
+                event.target.src =
                   "https://cdn.dribbble.com/users/1100163/screenshots/10895523/no_results_found_4x.jpg";
               }}
               alt={"meme"}
             />
+            <div className = "Buttons">
+              <Button className = "Update" onClick={() => Edit(meme._id, meme.caption, meme.url, meme.name)}>Update</Button>
+              <Button className = "delete" onClick={() => deleteMeme(meme._id)}>Delete</Button>
           </div>
+       </div>
         ))
       ) : (
         <div className="noMeme">
           <p>No Memes Found</p>
         </div>
       )}
-      {/* modal that opens when we wish to edit meme */}
+    
       <Modal
         open={isOpen}
         onClose={() => setIsOpen(false)}
@@ -136,7 +119,7 @@ const Memes = ({ memes: m }) => {
         caption={caption}
         url={url}
         name={name}
-        fetchMemes={fetchMemes}
+        getMemes={getMemes}
       >
         Fancy Modal
       </Modal>

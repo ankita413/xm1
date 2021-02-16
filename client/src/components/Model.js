@@ -4,8 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 const MODEL_STYLE = {
-  //   height: "50",
-  //   width: "500px",
+ 
   position: "fixed",
   top: "50%",
   left: "50%",
@@ -25,43 +24,41 @@ const OVERLAY_STYLES = {
   zIndex: 1000,
 };
 const Modal = ({ open, onClose, id, caption, url, name, fetchMemes }) => {
-  var [owner, setOwner] = useState("");
-  var [captionn, setCaption] = useState("");
-  var [imageURL, setImageURL] = useState("");
-  const [check, setCheck] = useState(0);
+  var [creator, setCreator] = useState("");
+  var [caption, setCaption] = useState("");
+  var [memeURL, setMemeURL] = useState("");
+  const [validate, setValidate] = useState(0);
   const [invalidUrl, setInvalid] = useState(false);
-
-  // use to set values in model with values of meme that we wish to edit
   useEffect(() => {
-    setOwner(name);
+    setCreator(name);
     setCaption(caption);
-    setImageURL(url);
+    setMemeURL(url);
   }, [name, url, caption]);
 
-  // check url
-  function checkURL() {
+ 
+  function validateURL() {
     const regex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
-    if (imageURL.match(regex)) {
-      setCheck(0);
+    if (memeURL.match(regex)) {
+      setValidate(0);
       return true;
     } else {
       console.log("false");
-      setCheck(1);
+      setValidate(1);
       return false;
     }
   }
 
-  // request to edit meme after all checks
-  const editMeme = () => {
-    if (checkFields() && checkURL()) {
+  
+  const Update = () => {
+    if (checkInput() && validateURL()) {
       fetch(`/memes/${id}`, {
         method: "put",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          caption: captionn,
-          url: imageURL,
+          caption: caption,
+          url: memeURL,
         }),
       })
         .then((res) => res.json())
@@ -78,21 +75,17 @@ const Modal = ({ open, onClose, id, caption, url, name, fetchMemes }) => {
         });
     }
   };
-
-  // will check if all fields are right
-  function checkFields() {
-    if (owner.length === 0 || captionn.length === 0 || imageURL.length === 0) {
-      setCheck(1);
+  function checkInput() {
+    if (creator.length === 0 || caption.length === 0 || memeURL.length === 0) {
+      setValidate(1);
       setInvalid(false);
       return false;
     } else {
-      setCheck(0);
+      setValidate(0);
       setInvalid(true);
       return true;
     }
   }
-
-  // if model is not opened then return null else show modal
   if (!open) return null;
   return ReactDOM.createPortal(
     <>
@@ -100,17 +93,17 @@ const Modal = ({ open, onClose, id, caption, url, name, fetchMemes }) => {
       <div style={MODEL_STYLE}>
         <Form className="form">
           <Form.Group controlId="name">
-            <Form.Label>Meme Owner</Form.Label>
+            <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
-              value={owner || ""}
-              placeholder="Enter your full name"
-              onChange={(e) => setOwner(e.target.value)}
+              value={creator || ""}
+              placeholder="Name"
+              onChange={(e) => setCreator(e.target.value)}
               disabled
             />
             <Form.Text className="text-muted">
-              {check && owner.length === 0 ? (
-                <p style={{ color: "red" }}>Enter Meme Owner</p>
+              {validate && creator.length === 0 ? (
+                <p style={{ color: "red" }}>Name</p>
               ) : null}
             </Form.Text>
           </Form.Group>
@@ -118,29 +111,29 @@ const Modal = ({ open, onClose, id, caption, url, name, fetchMemes }) => {
           <Form.Group controlId="caption">
             <Form.Label>Caption</Form.Label>
             <Form.Control
-              value={captionn || ""}
+              value={caption || ""}
               type="text"
-              placeholder="Be Creative with the caption"
+              placeholder="caption"
               onChange={(e) => setCaption(e.target.value)}
             />
             <Form.Text className="text-muted">
-              {check && captionn.length === 0 ? (
-                <p style={{ color: "red" }}>Enter Caption</p>
+              {validate && caption.length === 0 ? (
+                <p style={{ color: "red" }}>Caption</p>
               ) : null}
             </Form.Text>
           </Form.Group>
           <Form.Group controlId="url">
-            <Form.Label>Meme URL</Form.Label>
+            <Form.Label>URL</Form.Label>
             <div className="inline">
               <Form.Control
-                value={imageURL || ""}
+                value={memeURL || ""}
                 type="text"
-                placeholder="Enter URL of your meme here"
-                onChange={(e) => setImageURL(e.target.value)}
+                placeholder="URL"
+                onChange={(e) => setMemeURL(e.target.value)}
               />
             </div>
             <Form.Text className="text-muted">
-              {invalidUrl && check && imageURL.length === 0 ? (
+              {invalidUrl && validate && memeURL.length === 0 ? (
                 <p style={{ color: "Red" }}>Invalid URL</p>
               ) : null}
             </Form.Text>
@@ -149,10 +142,10 @@ const Modal = ({ open, onClose, id, caption, url, name, fetchMemes }) => {
             <div>
               <Button
                 variant="primary"
-                className="submitMeme"
-                onClick={editMeme}
+                className="submit"
+                onClick={Update}
               >
-                Edit Meme
+                Update
               </Button>
               <Button
                 variant="danger"

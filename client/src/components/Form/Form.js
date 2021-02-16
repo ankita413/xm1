@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 toast.configure();
-const FormDiv = () => {
+const Form = () => {
   const [memes, setMemes] = useState([]);
   useEffect(() => {
     getMemes();
@@ -18,18 +18,16 @@ const FormDiv = () => {
  
   function getMemes() {
     fetch("/memes")
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res.memes);
-        const d = new Date(res.memes.length > 0 && res.memes[0].createdAt);
-        console.log(d.toLocaleString());
-        setMemes(res.memes);
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response.memes);
+        
+        setMemes(response.memes);
       });
   }
 
   return (
     <div>
-      {/* <h1 className="heading">Meme Stream</h1> */}
       <Navbar />
       <HandleForm getMemes={getMemes} />
       <Memes memes={memes} />
@@ -37,4 +35,4 @@ const FormDiv = () => {
   );
 };
 
-export default FormDiv;
+export default Form;

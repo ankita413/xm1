@@ -97,17 +97,19 @@ const HandleForm = ({ getMemes }) => {
               
             }}
           />
-          </div>
-          <Button variant="primary" onClick={postMeme} className="submit">
-            Submit 
-          </Button>
-        
-        <Form.Text className="text-muted">
+            <Form.Text className="text-muted">
           {validate && memeURL.length === 0 ? (
             <p style={{ color: "Red" }}>Enter URL</p>
           ) : null}
         </Form.Text>
-      </Form.Group>
+          </div>
+          </Form.Group>
+          <Button variant="primary" onClick={postMeme} className="submit">
+            Submit 
+          </Button>
+        
+      
+    
     </Form>
   );
 };

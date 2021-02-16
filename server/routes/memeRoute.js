@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
     .limit(100)
     .sort("-createdAt")
     .then((memes) => {
-      res.json({ memes });
+      res.status(200).json( {memes} );
     })
     .catch((err) => res.status(422).json({ error: "Error in finding Memes" }));
 });
@@ -51,9 +51,11 @@ router.post("/", (req, res) => {
       });
         
       if (create) {
-       res.status(201).json({ message: "Successfully Created " });
-       const meme1 = create.save();
-       res.json({"id":meme1.id})
+       create.save(function(err,create)
+       {
+         if(err) return console.error(err)
+       });
+       res.status(200).json({"_id":create._id})
       } else {
         res.status(422).json({ error: "Error Occoured!" });
       }
