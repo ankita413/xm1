@@ -8,7 +8,7 @@ const DBconnection = async () => {
       
     }
     
-    const connect = await mongoose.connect(process.env.NODE_ENV, {
+    const connect = await mongoose.connect('mongodb+srv://ankita:ankita@cluster0.nksef.mongodb.net/<dbname>?retryWrites=true&w=majority', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
