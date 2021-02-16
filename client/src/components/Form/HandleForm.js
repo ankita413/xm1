@@ -23,7 +23,7 @@ const HandleForm = ({ getMemes }) => {
   
   const postMeme = () => {
     if (validateInput()) {
-      fetch("http://localhost:8081/memes", {
+      fetch("http://xmemebackendserver.herokuapp.com/memes", {
         
         method: "post",
         headers: {

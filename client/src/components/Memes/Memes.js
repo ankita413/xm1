@@ -24,7 +24,7 @@ const Memes = ({ memes: meme }) => {
 
   // fetch memes
   function getMemes() {
-    fetch("/memes")
+    fetch("http://xmemebackendserver.herokuapp.com/memes")
       .then((response) => response.json())
       .then((response) => {
         setMemes(response.memes);
@@ -32,7 +32,7 @@ const Memes = ({ memes: meme }) => {
   }
 
   const deleteMeme = (id) => {
-    fetch(`/memes/${id}`, {
+    fetch(`http://xmemebackendserver.herokuapp.com/memes/${id}`, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",

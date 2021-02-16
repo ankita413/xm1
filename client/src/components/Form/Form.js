@@ -17,7 +17,7 @@ const Form = () => {
 
  
   function getMemes() {
-    fetch("/memes")
+    fetch("http://xmemebackendserver.herokuapp.com/memes")
       .then((response) => response.json())
       .then((response) => {
         console.log(response.memes);
